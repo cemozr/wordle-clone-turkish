@@ -1,1 +1,1 @@
-# wordle-clone-turkish
+# wordle-game
