@@ -1,13 +1,38 @@
 import { WORDS } from "./words.js";
+import { turkishWords } from "./kelimeler.js";
 toastr.options.positionClass = "toast-top-full-width";
 const gameBoard = document.getElementById("game-board");
 let totalGuesses = 6;
 let remainingGuesses = totalGuesses;
 let playerGuess = [];
 let letterOrder = 0;
-let answer = WORDS[Math.floor(Math.random() * WORDS.length)];
 
+let turkishWords4 = [];
+let turkishWords5 = [];
+let turkishWords8 = [];
+let turkishWords11 = [];
+
+for (let i = 0; i < turkishWords.length; i++) {
+  if (3 < turkishWords[i].length && turkishWords[i].length < 5) {
+    turkishWords4.push(turkishWords[i]);
+  }
+  if (4 < turkishWords[i].length && turkishWords[i].length < 6) {
+    turkishWords5.push(turkishWords[i]);
+  }
+  if (7 < turkishWords[i].length && turkishWords[i].length < 9) {
+    turkishWords8.push(turkishWords[i]);
+  }
+  if (10 < turkishWords[i].length && turkishWords[i].length < 12) {
+    turkishWords11.push(turkishWords[i]);
+  }
+}
+let answer = turkishWords5[Math.floor(Math.random() * turkishWords5.length)];
 console.log(answer);
+console.log(turkishWords5);
+const easyBtn = document.getElementById("easy-btn");
+const normalBtn = document.getElementById("normal-btn");
+const hardBtn = document.getElementById("hard-btn");
+const veryHardBtn = document.getElementById("very-hard-btn");
 
 function initGameBoard() {
   for (let i = 0; i < totalGuesses; i++) {
@@ -140,10 +165,15 @@ document.addEventListener("keyup", (event) => {
     console.log(onScreenKeyboard);
     check(remainingGuesses);
   }
-
-  if (event.code.startsWith("Key") || event.code == "Quote") {
+  let rgx = pressedKey.match(/^[a-zA-ZiıİçÇşŞğĞÜüÖö]*$/gi);
+  if (!rgx || event.code == "Backspace" || event.code == "Enter") {
+    return;
+  } else {
     addLetter(pressedKey, remainingGuesses);
   }
+  // if (event.code.startsWith("Key") || event.code == "Quote") {
+  //   addLetter(pressedKey, remainingGuesses);
+  // }
 });
 
 function removeLetter(playerGuess) {
@@ -191,9 +221,10 @@ function check(pressedKey) {
     return;
   }
   console.log(
-    "WORDS includes playerguess ?? :  " + WORDS.includes(playerGuess.join(""))
+    "WORDS includes playerguess ?? :  " +
+      turkishWords5.includes(playerGuess.join(""))
   );
-  if (!WORDS.includes(playerGuess.join(""))) {
+  if (!turkishWords.includes(playerGuess.join(""))) {
     toastr.error("Geçerli Bir Kelime Deneyin!");
     playerGuess.slice(0, 5);
     remainingGuesses += 1;
