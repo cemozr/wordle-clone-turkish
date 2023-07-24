@@ -5,13 +5,13 @@ const gameBoard = document.getElementById("game-board");
 let totalGuesses = 6;
 let remainingGuesses = totalGuesses;
 let playerGuess = [];
-let letterOrder = 0;
 
 let turkishWords4 = [];
 let turkishWords5 = [];
 let turkishWords8 = [];
 let turkishWords11 = [];
 
+let answer = [];
 for (let i = 0; i < turkishWords.length; i++) {
   if (3 < turkishWords[i].length && turkishWords[i].length < 5) {
     turkishWords4.push(turkishWords[i]);
@@ -26,27 +26,49 @@ for (let i = 0; i < turkishWords.length; i++) {
     turkishWords11.push(turkishWords[i]);
   }
 }
-let answer = turkishWords5[Math.floor(Math.random() * turkishWords5.length)];
-console.log(answer);
-console.log(turkishWords5);
+
 const easyBtn = document.getElementById("easy-btn");
 const normalBtn = document.getElementById("normal-btn");
 const hardBtn = document.getElementById("hard-btn");
 const veryHardBtn = document.getElementById("very-hard-btn");
+const difficultyBtn = document.getElementsByClassName("difficulty-select-btn");
+
+let url_string = window.location.href;
+let url = new URL(url_string);
+let difficulty = url.searchParams.get("letterCount");
+if (difficulty == 4) {
+  answer = turkishWords4[Math.floor(Math.random() * turkishWords4.length)];
+  console.log(answer);
+}
+if (difficulty == 5) {
+  answer = turkishWords5[Math.floor(Math.random() * turkishWords5.length)];
+
+  console.log(answer);
+}
+if (difficulty == 8) {
+  answer = turkishWords8[Math.floor(Math.random() * turkishWords8.length)];
+
+  console.log(answer);
+}
+if (difficulty == 11) {
+  answer = turkishWords11[Math.floor(Math.random() * turkishWords11.length)];
+  console.log(answer);
+}
 
 function initGameBoard() {
   for (let i = 0; i < totalGuesses; i++) {
     let letterRow = document.createElement("div");
     letterRow.className = "letter-row";
     gameBoard.appendChild(letterRow);
-    for (let j = 0; j < 5; j++) {
+    for (let j = 0; j < difficulty; j++) {
       let letterBox = document.createElement("div");
       letterBox.className = "letter-box";
       letterRow.appendChild(letterBox);
     }
   }
 }
-initGameBoard();
+initGameBoard(difficulty);
+
 const onScreenKeyboard = document.getElementsByClassName("keyboard-box-btn");
 const onScreenKeyboardEnter = document.getElementById("keyboard-box-btn-enter");
 const onScreenKeyboardDel = document.getElementById("keyboard-box-btn-del");
@@ -268,7 +290,7 @@ function check(pressedKey) {
 }
 
 function addLetter(pressedKey) {
-  if (playerGuess.length == 5) {
+  if (playerGuess.length == difficulty) {
     return;
   }
 
