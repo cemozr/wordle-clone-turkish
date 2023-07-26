@@ -1,15 +1,19 @@
-import { WORDS } from "./words.js";
 import { turkishWords } from "./kelimeler.js";
 toastr.options.positionClass = "toast-top-full-width";
+const title = document.getElementById("title");
 const gameBoard = document.getElementById("game-board");
+const mainDiv = document.getElementById("main");
+const keyboardContainer = document.getElementById("keyboard-container");
+const body = document.body;
 let totalGuesses = 6;
 let remainingGuesses = totalGuesses;
 let playerGuess = [];
-
 let turkishWords4 = [];
 let turkishWords5 = [];
 let turkishWords8 = [];
 let turkishWords11 = [];
+let exGuess = [];
+exGuess = playerGuess.slice(0);
 
 let answer = [];
 for (let i = 0; i < turkishWords.length; i++) {
@@ -27,11 +31,11 @@ for (let i = 0; i < turkishWords.length; i++) {
   }
 }
 
-const easyBtn = document.getElementById("easy-btn");
-const normalBtn = document.getElementById("normal-btn");
-const hardBtn = document.getElementById("hard-btn");
-const veryHardBtn = document.getElementById("very-hard-btn");
-const difficultyBtn = document.getElementsByClassName("difficulty-select-btn");
+// const easyBtn = document.getElementById("easy-btn");
+// const normalBtn = document.getElementById("normal-btn");
+// const hardBtn = document.getElementById("hard-btn");
+// const veryHardBtn = document.getElementById("very-hard-btn");
+// const difficultyBtn = document.getElementsByClassName("difficulty-select-btn");
 
 let url_string = window.location.href;
 let url = new URL(url_string);
@@ -68,7 +72,7 @@ function initGameBoard() {
   }
 }
 initGameBoard(difficulty);
-
+console.log("answer length : " + answer.length);
 const onScreenKeyboard = document.getElementsByClassName("keyboard-box-btn");
 const onScreenKeyboardEnter = document.getElementById("keyboard-box-btn-enter");
 const onScreenKeyboardDel = document.getElementById("keyboard-box-btn-del");
@@ -94,7 +98,7 @@ for (let i = 0; i < onScreenKeyboard.length; i++) {
       removeLetter(playerGuess);
     }
 
-    if (pressedKey === enter && playerGuess.length === 5) {
+    if (pressedKey === enter && playerGuess.length === answer.length) {
       console.log(3);
       let row =
         document.getElementsByClassName("letter-row")[6 - remainingGuesses];
@@ -107,7 +111,7 @@ for (let i = 0; i < onScreenKeyboard.length; i++) {
           playerGuess.includes(onScreenKeyboard[k].innerHTML)
         ) {
           let found = false;
-          for (let j = 0; j < 5; j++) {
+          for (let j = 0; j < answer.length; j++) {
             if (
               answer[j] == onScreenKeyboard[k].innerHTML &&
               playerGuess[j] == onScreenKeyboard[k].innerHTML
@@ -126,7 +130,7 @@ for (let i = 0; i < onScreenKeyboard.length; i++) {
         }
       }
 
-      check(remainingGuesses);
+      check(remainingGuesses, answer);
     }
 
     if (pressedKey !== del && pressedKey !== enter) {
@@ -148,7 +152,7 @@ document.addEventListener("keyup", (event) => {
     console.log(2);
     removeLetter(playerGuess);
   }
-  if (pressedKey === "Enter") {
+  if (pressedKey === "Enter" && playerGuess.length === answer.length) {
     console.log(3);
 
     for (let k = 0; k < onScreenKeyboard.length; ++k) {
@@ -157,7 +161,7 @@ document.addEventListener("keyup", (event) => {
         playerGuess.includes(onScreenKeyboard[k].innerHTML)
       ) {
         let found = false;
-        for (let j = 0; j < 5; j++) {
+        for (let j = 0; j < answer.length; j++) {
           if (
             answer[j] == onScreenKeyboard[k].innerHTML &&
             playerGuess[j] == onScreenKeyboard[k].innerHTML
@@ -185,8 +189,9 @@ document.addEventListener("keyup", (event) => {
       }
     }
     console.log(onScreenKeyboard);
-    check(remainingGuesses);
+    check(remainingGuesses, answer);
   }
+
   let rgx = pressedKey.match(/^[a-zA-ZiıİçÇşŞğĞÜüÖö]*$/gi);
   if (!rgx || event.code == "Backspace" || event.code == "Enter") {
     return;
@@ -214,7 +219,7 @@ function check(pressedKey) {
 
   for (i = 0; i < answer.length; i++) {
     let box = row.children[i];
-    if (answer[i] == playerGuess[i] && playerGuess.length == 5) {
+    if (answer[i] == playerGuess[i] && playerGuess.length == answer.length) {
       box.classList.add("bg-green");
       row.classList.add("animate__animated", "animate__bounce");
 
@@ -224,11 +229,11 @@ function check(pressedKey) {
     let checkLetter = answer[i].localeCompare(playerGuess[i]);
     let checkLetterYellow = answer.includes(playerGuess[i]);
 
-    if (checkLetterYellow && playerGuess.length == 5) {
+    if (checkLetterYellow && playerGuess.length == answer.length) {
       box.classList.add("bg-yellow");
       console.log(6);
     }
-    if (checkLetter !== 0 && playerGuess.length == 5) {
+    if (checkLetter !== 0 && playerGuess.length == answer.length) {
       box.classList.add("bg-gray");
       console.log(5);
     }
@@ -238,7 +243,16 @@ function check(pressedKey) {
       continue;
     }
   }
-  if (playerGuess.length != 5) {
+  if (playerGuess.length != answer.length) {
+    // for (let k = 0; k < onScreenKeyboard.length; k++) {
+    //   onScreenKeyboard[k].classList.remove(
+    //     "bg-green",
+    //     "bg-yellow",
+    //     "bg-gray",
+    //     "animate__animated",
+    //     "animate__heartBeat"
+    //   );
+    // }
     letterAlert();
     return;
   }
@@ -248,7 +262,8 @@ function check(pressedKey) {
   );
   if (!turkishWords.includes(playerGuess.join(""))) {
     toastr.error("Geçerli Bir Kelime Deneyin!");
-    playerGuess.slice(0, 5);
+    exGuess = playerGuess.slice(0);
+    playerGuess.splice(0, answer.length);
     remainingGuesses += 1;
 
     for (let i = 0; i < answer.length; i++) {
@@ -262,14 +277,16 @@ function check(pressedKey) {
         "animate__heartBeat"
       );
       for (let k = 0; k < onScreenKeyboard.length; k++) {
-        onScreenKeyboard[k].classList.remove(
-          "bg-green",
-          "bg-yellow",
-          "bg-gray",
-          "animate__animated",
-          "animate__heartBeat"
-        );
-        console.log("asdasd" + onScreenKeyboard[k]);
+        let onScreenKeyboardInner = onScreenKeyboard[k].innerHTML;
+        if (exGuess.includes(onScreenKeyboardInner))
+          onScreenKeyboard[k].classList.remove(
+            "bg-green",
+            "bg-yellow",
+            "bg-gray",
+            "animate__animated",
+            "animate__heartBeat"
+          );
+        console.log("harf: " + exGuess);
       }
     }
   }
@@ -281,11 +298,27 @@ function check(pressedKey) {
     setTimeout(function () {
       location.reload();
     }, 3000);
-  } else {
+  }
+  if (checkWord != 0) {
     toastr.error("Tekrar Deneyin!");
     remainingGuesses -= 1;
-    playerGuess.splice(0, 5);
+    exGuess = playerGuess.slice(0);
+    playerGuess.splice(0, answer.length);
     console.log(playerGuess);
+  }
+  if (remainingGuesses == 0) {
+    gameBoard.style.display = "none";
+    keyboardContainer.style.display = "none";
+    title.style.display = "none";
+    let scoreDiv = document.createElement("div");
+    scoreDiv.className = "score-div";
+    scoreDiv.classList.add = "animate__animated animate__rubberBand";
+    mainDiv.appendChild(scoreDiv);
+    let scoreText = document.createElement("h1");
+    scoreText.className = "score-text";
+    scoreText.classList.add = "animate__animated animate__rubberBand";
+    scoreDiv.appendChild(scoreText);
+    scoreText.innerHTML = "Doğru Kelime: " + answer;
   }
 }
 
@@ -306,7 +339,7 @@ function addLetter(pressedKey) {
   console.log(playerGuess);
 }
 function letterAlert() {
-  if (playerGuess.length != 5) {
-    toastr.warning("Eksik Harf Girdiniz!");
-  }
+  // if (playerGuess.length != answer.length) {
+  toastr.warning("Eksik Harf Girdiniz!");
+  // }
 }
