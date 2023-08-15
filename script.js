@@ -31,12 +31,6 @@ for (let i = 0; i < turkishWords.length; i++) {
   }
 }
 
-// const easyBtn = document.getElementById("easy-btn");
-// const normalBtn = document.getElementById("normal-btn");
-// const hardBtn = document.getElementById("hard-btn");
-// const veryHardBtn = document.getElementById("very-hard-btn");
-// const difficultyBtn = document.getElementsByClassName("difficulty-select-btn");
-
 let url_string = window.location.href;
 let url = new URL(url_string);
 let difficulty = url.searchParams.get("letterCount");
@@ -244,15 +238,6 @@ function check(pressedKey) {
     }
   }
   if (playerGuess.length != answer.length) {
-    // for (let k = 0; k < onScreenKeyboard.length; k++) {
-    //   onScreenKeyboard[k].classList.remove(
-    //     "bg-green",
-    //     "bg-yellow",
-    //     "bg-gray",
-    //     "animate__animated",
-    //     "animate__heartBeat"
-    //   );
-    // }
     letterAlert();
     return;
   }
@@ -290,9 +275,9 @@ function check(pressedKey) {
       }
     }
   }
-  // console.log(playerGuess);
+
   let checkWord = String(answer).localeCompare(playerGuess.join(""));
-  // console.log(answer);
+
   if (checkWord == 0) {
     toastr.success("Tebrikler! Bir Sonraki Kelimeye Geçtiniz.");
     setTimeout(function () {
@@ -309,11 +294,12 @@ function check(pressedKey) {
   if (remainingGuesses == 0) {
     gameBoard.style.display = "none";
     keyboardContainer.style.display = "none";
-    title.style.display = "none";
+    // title.style.display = "none";
     let scoreDiv = document.createElement("div");
     scoreDiv.className = "score-div";
     scoreDiv.classList.add = "animate__animated animate__rubberBand";
     mainDiv.appendChild(scoreDiv);
+
     let scoreText = document.createElement("h1");
     scoreText.className = "score-text";
     scoreText.classList.add = "animate__animated animate__rubberBand";
