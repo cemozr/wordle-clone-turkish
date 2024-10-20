@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html style="margin: 0; height: 100%" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wordle Clone</title>
+    <title>Wordle</title>
     <link rel="stylesheet" href="./style.css" />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
@@ -15,131 +15,54 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
   </head>
-  <body>
-    <div id="main" class="main-content">
-      <!-- <h1 id="title">WordLee</h1> -->
-      <!-- <a href="intro.html"><button>back</button></a> -->
-      <div
-        id="game-board"
-        class="animate__animated animate__bounceInDown"
-      ></div>
-      <div
-        id="keyboard-container"
-        class="animate__animated animate__bounceInUp"
-      >
-        <div class="keyboard-row">
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">e</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">r</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">t</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">y</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">u</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">ı</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">o</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">p</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">ğ</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">ü</button>
-          </div>
-        </div>
-        <div class="keyboard-row">
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">a</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">s</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">d</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">f</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">g</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">h</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">j</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">k</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">l</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">ş</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">i</button>
-          </div>
-        </div>
-        <div class="keyboard-row">
-          <div class="keyboard-box">
-            <button
-              id="keyboard-box-btn-del"
-              class="keyboard-box-btn keyboard-box-btn-del"
-            >
-              Sil
-            </button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">z</button>
-          </div>
+  <body
+    style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      height: 100%;
+    "
+  >
+    <div class="container">
+      <h1 class="animate__animated animate__bounceInDown">WordLee</h1>
+      <h2 class="menu-text animate__animated animate__bounceInDown">
+        Lütfen Zorluk Seviyesi Seçiniz
+      </h2>
+      <div class="letter-length-options">
+        <a href="intro.html?letterCount=4">
+          <button
+            id="easy-btn"
+            class="animate__animated animate__bounceInLeft difficulty-select-btn"
+          >
+            Kolay
+          </button></a
+        >
 
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">c</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">v</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">b</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">n</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">m</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">ö</button>
-          </div>
-          <div class="keyboard-box">
-            <button class="keyboard-box-btn">ç</button>
-          </div>
-          <div class="keyboard-box">
-            <button
-              id="keyboard-box-btn-enter"
-              class="keyboard-box-btn keyboard-box-btn-enter"
-            >
-              giriş
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="back-btn-div">
-        <a href="./intro.html"> <button class="back-btn">Ana Menü</button> </a>
+        <a href="intro.html?letterCount=5">
+          <button
+            id="normal-btn"
+            class="animate__animated animate__bounceInRight difficulty-select-btn"
+          >
+            Normal
+          </button></a
+        >
+        <a href="intro.html?letterCount=8">
+          <button
+            id="hard-btn"
+            class="animate__animated animate__bounceInLeft difficulty-select-btn"
+          >
+            Zor
+          </button></a
+        >
+        <a href="intro.html?letterCount=11">
+          <button
+            id="very-hard-btn"
+            class="animate__animated animate__bounceInUp difficulty-select-btn"
+          >
+            Bunu Seçme :)
+          </button></a
+        >
       </div>
     </div>
     <script
