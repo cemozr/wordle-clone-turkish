@@ -36,21 +36,15 @@ let url = new URL(url_string);
 let difficulty = url.searchParams.get("letterCount");
 if (difficulty == 4) {
   answer = turkishWords4[Math.floor(Math.random() * turkishWords4.length)];
-  console.log(answer);
 }
 if (difficulty == 5) {
   answer = turkishWords5[Math.floor(Math.random() * turkishWords5.length)];
-
-  console.log(answer);
 }
 if (difficulty == 8) {
   answer = turkishWords8[Math.floor(Math.random() * turkishWords8.length)];
-
-  console.log(answer);
 }
 if (difficulty == 11) {
   answer = turkishWords11[Math.floor(Math.random() * turkishWords11.length)];
-  console.log(answer);
 }
 
 function initGameBoard() {
@@ -66,7 +60,7 @@ function initGameBoard() {
   }
 }
 initGameBoard(difficulty);
-console.log("answer length : " + answer.length);
+
 const onScreenKeyboard = document.getElementsByClassName("keyboard-box-btn");
 const onScreenKeyboardEnter = document.getElementById("keyboard-box-btn-enter");
 const onScreenKeyboardDel = document.getElementById("keyboard-box-btn-del");
@@ -80,25 +74,18 @@ for (let i = 0; i < onScreenKeyboard.length; i++) {
     let enter = onScreenKeyboardEnter.innerHTML;
     let del = onScreenKeyboardDel.innerHTML;
 
-    console.log("pressedKeysBoxes: " + pressedKeysBoxes);
-    console.log(pressedKey);
-    console.log(enter);
     if (remainingGuesses == 0) {
-      console.log(1);
       return;
     }
     if (pressedKey === del && playerGuess.length != 0) {
-      console.log(2);
       removeLetter(playerGuess);
     }
 
     if (pressedKey === enter && playerGuess.length === answer.length) {
-      console.log(3);
       let row =
         document.getElementsByClassName("letter-row")[6 - remainingGuesses];
       row.classList.add("animate__animated", "animate__bounce");
 
-      console.log(pressedKeysBoxes);
       for (let k = 0; k < onScreenKeyboard.length; ++k) {
         if (
           answer.includes(onScreenKeyboard[k].innerHTML) &&
@@ -139,16 +126,12 @@ document.addEventListener("keyup", (event) => {
   pressedKeysList.push(pressedKey);
 
   if (remainingGuesses == 0) {
-    console.log(1);
     return;
   }
   if (pressedKey === "Backspace" && playerGuess.length != 0) {
-    console.log(2);
     removeLetter(playerGuess);
   }
   if (pressedKey === "Enter" && playerGuess.length === answer.length) {
-    console.log(3);
-
     for (let k = 0; k < onScreenKeyboard.length; ++k) {
       if (
         answer.includes(onScreenKeyboard[k].innerHTML) &&
@@ -182,7 +165,7 @@ document.addEventListener("keyup", (event) => {
         onScreenKeyboard[k].classList.add("bg-gray");
       }
     }
-    console.log(onScreenKeyboard);
+
     check(remainingGuesses, answer);
   }
 
@@ -203,8 +186,6 @@ function removeLetter(playerGuess) {
   box.classList.remove("filled-box");
   box.textContent = "";
   playerGuess.pop();
-  console.log("playerGuess" + playerGuess);
-  console.log("removedLetterOrder: " + playerGuess.length);
 }
 
 function check(pressedKey) {
@@ -217,7 +198,6 @@ function check(pressedKey) {
       box.classList.add("bg-green");
       row.classList.add("animate__animated", "animate__bounce");
 
-      console.log(5);
       continue;
     }
     let checkLetter = answer[i].localeCompare(playerGuess[i]);
@@ -225,11 +205,9 @@ function check(pressedKey) {
 
     if (checkLetterYellow && playerGuess.length == answer.length) {
       box.classList.add("bg-yellow");
-      console.log(6);
     }
     if (checkLetter !== 0 && playerGuess.length == answer.length) {
       box.classList.add("bg-gray");
-      console.log(5);
     }
 
     if (pressedKey === "Enter") {
@@ -241,10 +219,7 @@ function check(pressedKey) {
     letterAlert();
     return;
   }
-  console.log(
-    "WORDS includes playerguess ?? :  " +
-      turkishWords5.includes(playerGuess.join(""))
-  );
+
   if (!turkishWords.includes(playerGuess.join(""))) {
     toastr.error("Geçerli Bir Kelime Deneyin!");
     exGuess = playerGuess.slice(0);
@@ -271,7 +246,6 @@ function check(pressedKey) {
             "animate__animated",
             "animate__heartBeat"
           );
-        console.log("harf: " + exGuess);
       }
     }
   }
@@ -289,7 +263,6 @@ function check(pressedKey) {
     remainingGuesses -= 1;
     exGuess = playerGuess.slice(0);
     playerGuess.splice(0, answer.length);
-    console.log(playerGuess);
   }
   if (remainingGuesses == 0) {
     gameBoard.style.display = "none";
@@ -320,9 +293,6 @@ function addLetter(pressedKey) {
   box.classList.add("filled-box", "animate__animated", "animate__flip");
   box.textContent = pressedKey;
   playerGuess.push(pressedKey);
-
-  console.log("addedLetterOrder: " + playerGuess.length);
-  console.log(playerGuess);
 }
 function letterAlert() {
   // if (playerGuess.length != answer.length) {
